@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-surface-muted font-body text-ink antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight;
+  }
+
+  /* Keyboard users get a clear focus ring; mouse users don't see it. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand-500/60 ring-offset-2 ring-offset-white;
+  }
+
+  ::selection {
+    @apply bg-brand-100 text-brand-900;
+  }
+
+  /* Strip the spinner arrows from quantity inputs so they style consistently. */
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}
+
+@layer components {
+  /* ---- Layout ---- */
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6;
+  }
+
+  /* ---- Buttons ---- */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full text-sm font-medium
+           transition duration-150 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+  .btn-sm {
+    @apply px-4 py-1.5 text-xs;
+  }
+  .btn-md {
+    @apply px-5 py-2.5;
+  }
+  .btn-lg {
+    @apply px-6 py-3 text-base;
+  }
+  .btn-primary {
+    @apply bg-brand-500 text-white shadow-soft hover:bg-brand-600 active:bg-brand-700;
+  }
+  .btn-outline {
+    @apply border border-brand-200 bg-white text-brand-700 hover:border-brand-400 hover:bg-brand-50;
+  }
+  .btn-ghost {
+    @apply text-ink/70 hover:bg-brand-50 hover:text-brand-700;
+  }
+  .btn-danger {
+    @apply border border-danger-500/30 bg-white text-danger-700 hover:bg-danger-50;
+  }
+
+  /* ---- Forms ---- */
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-ink/80;
+  }
+  .input {
+    @apply w-full rounded-xl border border-brand-100 bg-white px-4 py-2.5 text-sm text-ink
+           placeholder:text-ink/35 transition
+           focus:border-brand-400 focus:outline-none focus:ring-4 focus:ring-brand-500/10
+           disabled:bg-surface-sunken disabled:text-ink/50;
+  }
+  .input-error {
+    @apply border-danger-500/60 focus:border-danger-500 focus:ring-danger-500/10;
+  }
+  .hint {
+    @apply mt-1.5 text-xs text-ink/50;
+  }
+  .hint-error {
+    @apply mt-1.5 text-xs text-danger-700;
+  }
+
+  /* ---- Surfaces ---- */
+  .card {
+    @apply rounded-2xl border border-brand-100 bg-white shadow-soft;
+  }
+  .card-hover {
+    @apply transition duration-200 hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-lift;
+  }
+
+  /* ---- Badges ---- */
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium capitalize;
+  }
+  .badge-neutral {
+    @apply bg-surface-sunken text-ink/70;
+  }
+  .badge-brand {
+    @apply bg-brand-50 text-brand-700;
+  }
+  .badge-success {
+    @apply bg-success-50 text-success-700;
+  }
+  .badge-warning {
+    @apply bg-warning-50 text-warning-700;
+  }
+  .badge-danger {
+    @apply bg-danger-50 text-danger-700;
+  }
+  .badge-info {
+    @apply bg-info-50 text-info-700;
+  }
+
+  /* ---- Misc ---- */
+  .skeleton {
+    @apply animate-pulse rounded-md bg-brand-100/70;
+  }
+  .link {
+    @apply text-brand-600 underline decoration-brand-300 underline-offset-2 hover:text-brand-700;
+  }
+}
