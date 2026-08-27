@@ -1,0 +1,49 @@
+{
+  "users": [
+    {
+      "_id": "6a7edccad0029eb48857ee16",
+      "name": "AMey",
+      "email": "amey@gmail.com",
+      "password": "$2a$10$SOMU78sjAQvyJGOWk8y4AucxHRbRrlttjYl3ERYA8N05cTcfzOYP2",
+      "role": "customer",
+      "store": null,
+      "isActive": true,
+      "avatar": "",
+      "createdAt": "2026-08-14T09:15:54.117Z",
+      "updatedAt": "2026-08-14T09:15:54.117Z",
+      "__v": 0
+    },
+    {
+      "_id": "6a7edd3dd0029eb48857ee22",
+      "name": "ameyyy",
+      "email": "ameey@gmail.com",
+      "password": "$2a$10$rhVG.xQ6IawT1axVzC5/ZuAweu1rdI0r7Rzcd9PJp7lSIi7GNw4IC",
+      "role": "vendor",
+      "store": "6a7edd51d0029eb48857ee25",
+      "isActive": true,
+      "avatar": "",
+      "createdAt": "2026-08-14T09:17:49.612Z",
+      "updatedAt": "2026-08-14T09:18:09.408Z",
+      "__v": 0
+    }
+  ],
+  "stores": [
+    {
+      "_id": "6a7edd51d0029eb48857ee25",
+      "name": "example",
+      "slug": "example",
+      "description": "hi shop here",
+      "logo": "",
+      "banner": "",
+      "owner": "6a7edd3dd0029eb48857ee22",
+      "status": "pending",
+      "contactEmail": "ameey@gmail.com",
+      "stripeAccountId": null,
+      "createdAt": "2026-08-14T09:18:09.405Z",
+      "updatedAt": "2026-08-14T09:18:09.405Z",
+      "__v": 0
+    }
+  ],
+  "products": [],
+  "orders": []
+}
