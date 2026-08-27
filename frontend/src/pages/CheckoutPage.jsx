@@ -19,6 +19,9 @@ function CheckoutForm({ items, address, setAddress }) {
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
   const shipping = subtotal > 100 ? 0 : 9.99;
 
+  const isMockStripe = !import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ||
+    import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY.includes("Mock");
+
   const handlePay = async (e) => {
     e.preventDefault();
     if (!stripe || !elements) return;
@@ -55,8 +58,42 @@ function CheckoutForm({ items, address, setAddress }) {
     }
   };
 
+  const handleSimulatePayment = async (e) => {
+    e.preventDefault();
+    // Validate inputs
+    if (!address.fullName || !address.phone || !address.line1 || !address.city || !address.postalCode || !address.state || !address.country) {
+      toast.error("Please fill out all address fields");
+      return;
+    }
+    setLoading(true);
+    try {
+      const fakePaymentIntentId = "pi_mock_" + Math.random().toString(36).substring(2, 15);
+      await api.post("/orders", {
+        store: items[0].storeId,
+        items,
+        shippingAddress: address,
+        stripePaymentIntentId: fakePaymentIntentId, // This marks the order as paid on creation!
+      });
+      dispatch(clearCart());
+      toast.success("Mock Order placed successfully!");
+      navigate("/orders");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Mock payment failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <form onSubmit={handlePay} className="space-y-5">
+      {isMockStripe && (
+        <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
+          <p className="font-semibold">🛠️ Developer Dev Mode Active</p>
+          <p className="mt-1 text-xs">
+            Using mock Stripe keys. Fill out the shipping form and click <strong>Simulate Mock Payment</strong> below to test order fulfillment without Stripe configuration.
+          </p>
+        </div>
+      )}
       <div className="grid grid-cols-2 gap-3">
         <input required placeholder="Full name" className="rounded-lg border border-brand-100 px-4 py-2.5"
           value={address.fullName} onChange={(e) => setAddress({ ...address, fullName: e.target.value })} />
@@ -74,9 +111,11 @@ function CheckoutForm({ items, address, setAddress }) {
           value={address.country} onChange={(e) => setAddress({ ...address, country: e.target.value })} />
       </div>
 
-      <div className="rounded-lg border border-brand-100 p-4">
-        <CardElement options={{ style: { base: { fontSize: "16px" } } }} />
-      </div>
+      {!isMockStripe && (
+        <div className="rounded-lg border border-brand-100 p-4">
+          <CardElement options={{ style: { base: { fontSize: "16px" } } }} />
+        </div>
+      )}
 
       <div className="flex justify-between text-sm text-ink/70">
         <span>Subtotal</span><span>${subtotal.toFixed(2)}</span>
@@ -88,9 +127,15 @@ function CheckoutForm({ items, address, setAddress }) {
         <span>Total</span><span>${(subtotal + shipping).toFixed(2)}</span>
       </div>
 
-      <button disabled={!stripe || loading} className="w-full rounded-full bg-brand-500 py-3 text-white hover:bg-brand-600 disabled:opacity-60">
-        {loading ? "Processing..." : "Pay & Place Order"}
-      </button>
+      {isMockStripe ? (
+        <button type="button" onClick={handleSimulatePayment} disabled={loading} className="w-full rounded-full bg-emerald-600 py-3 text-white hover:bg-emerald-700 disabled:opacity-60 font-semibold transition">
+          {loading ? "Processing..." : "Simulate Mock Payment (Fast Checkout)"}
+        </button>
+      ) : (
+        <button disabled={!stripe || loading} className="w-full rounded-full bg-brand-500 py-3 text-white hover:bg-brand-600 disabled:opacity-60">
+          {loading ? "Processing..." : "Pay & Place Order"}
+        </button>
+      )}
     </form>
   );
 }
